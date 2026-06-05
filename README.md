@@ -1,5 +1,7 @@
 # 🌌 AI Cinema Lab — "The Silent Edge"
 
+*Hecho con amor y estilo por Miguel Ángel Carvajal (tu servilleta) & Antigravity (Google DeepMind) 🎬🖤*
+
 Este repositorio contiene la arquitectura de plataforma, el motor de procesamiento de video por IA y la documentación técnica del cortometraje SRE Cyberpunk **"The Silent Edge"**.
 
 El proyecto demuestra cómo desplegar un flujo automatizado de generación de video utilizando las APIs de **Google Cloud Vertex AI** (modelos Veo e Imagen Video), aplicando estrictos controles de gobernanza de costos (**FinOps**) y procesamiento de montaje automatizado.
