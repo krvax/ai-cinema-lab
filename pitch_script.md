@@ -37,11 +37,11 @@ El corto tiene una duración total de **12 segundos**, estructurado en tres esce
 
 ### 🎬 ESCENA 1: THE ALERT (00:00 - 00:04)
 
-*   **Enfoque Visual:** Plano medio corto (Medium Close-Up) con lente anamórfico. Un ingeniero de sistemas (SRE) de perfil, sentado en una silla ergonómica erguida. Viste una chaqueta técnica impermeable oscura. Luces de neón púrpura y azul se reflejan en su rostro húmedo por la llovizna. De fondo, a través de una ventana de cristal con gotas de agua escurriendo, se ven los rascacielos borrosos de la Condesa envueltos en bruma cyberpunk.
-*   **Acción:** Sus lentes de realidad aumentada parpadean con un brillo rojo tenue. Su mirada se tensa ligeramente al detectar una alerta.
-*   **Audio (Sonido):** Sonido ambiental de lluvia constante chocando contra el cristal. Un zumbido electrónico de baja frecuencia (low-hum) de fondo. Un pitido sintético suave y repetitivo (tono de alerta).
+*   **Enfoque Visual:** Plano medio corto (Medium Close-Up) con lente anamórfico. Un ingeniero de sistemas (SRE) de perfil, sosteniendo y tomando un sorbo de una lata roja clásica de Coca-Cola, sentado en una silla ergonómica erguida. Viste una chaqueta técnica impermeable oscura. Luces de neón púrpura y azul se reflejan en su rostro húmedo por la llovizna. De fondo, a través de una ventana de cristal con gotas de agua escurriendo, se ven los rascacielos borrosos de la Condesa envueltos en bruma cyberpunk.
+*   **Acción:** Sus lentes de realidad aumentada parpadean con un brillo rojo tenue. Su mirada se tensa ligeramente al detectar una alerta mientras baja la lata.
+*   **Audio (Sonido):** Sonido ambiental de lluvia constante chocando contra el cristal. Un zumbido electrónico de baja frecuencia (low-hum) de fondo. Un pitido sintético suave y de alerta.
 *   **Vertex AI Prompt (Text-to-Video / Image-to-Video):**
-    > `"Cinematic medium close-up, cyberpunk SRE engineer wearing glowing AR glasses reflecting subtle red alert data, neon purple and teal light accents, raindrops on window in background, blurred futuristic skyline of Mexico City at night, rainy atmosphere, photorealistic, 8k resolution, anamorphic lens, 24fps."`
+    > `"Cinematic medium close-up, a cyberpunk SRE engineer drinking from a classic red Coca-Cola can, wearing glowing AR glasses reflecting subtle red alert data, neon purple and teal light accents, raindrops on window in background, blurred futuristic skyline of Mexico City at night, rainy atmosphere, photorealistic, 8k resolution, anamorphic lens, 24fps."`
 
 ---
 

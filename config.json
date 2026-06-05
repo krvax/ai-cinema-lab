@@ -14,7 +14,7 @@
     {
       "id": 1,
       "type": "text-to-video",
-      "prompt": "Cinematic medium close-up, cyberpunk SRE engineer wearing glowing AR glasses reflecting subtle red alert data, neon purple and teal light accents, raindrops on window in background, blurred futuristic skyline of Mexico City at night, rainy atmosphere, photorealistic, 8k resolution, anamorphic lens, 24fps.",
+      "prompt": "Cinematic medium close-up, a cyberpunk SRE engineer drinking from a classic red Coca-Cola can, wearing glowing AR glasses reflecting subtle red alert data, neon purple and teal light accents, raindrops on window in background, blurred futuristic skyline of Mexico City at night, rainy atmosphere, photorealistic, 8k resolution, anamorphic lens, 24fps.",
       "duration_seconds": 4,
       "output_name": "scene1_alert.mp4"
     },
