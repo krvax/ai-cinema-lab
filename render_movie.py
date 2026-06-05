@@ -11,14 +11,29 @@ from datetime import datetime
 
 # Importaciones condicionales para evitar fallas si no están instaladas aún
 try:
-    from google.cloud import aiplatform
+    from google import genai
+    from google.genai import types
 except ImportError:
-    aiplatform = None
+    genai = None
+    types = None
 
 try:
-    from moviepy.editor import VideoFileClip, concatenate_videoclips
+    from google.cloud import storage
 except ImportError:
-    VideoFileClip = None
+    storage = None
+
+try:
+    import imageio_ffmpeg
+except ImportError:
+    imageio_ffmpeg = None
+
+try:
+    from moviepy import VideoFileClip, concatenate_videoclips
+except ImportError:
+    try:
+        from moviepy.editor import VideoFileClip, concatenate_videoclips
+    except ImportError:
+        VideoFileClip = None
 
 LEDGER_FILE = "finops_ledger.json"
 
@@ -99,44 +114,144 @@ def mock_render_scene(scene, output_dir):
     print(f"🎬 [MOCK RENDER] Generando {scene['output_name']}...")
     print(f"   Prompt: \"{scene['prompt'][:60]}...\"")
     
-    # Intentamos crear un archivo mock muy pequeño para que moviepy no falle al concatenar
-    # Si ffmpeg está en el sistema, creamos un video real en negro con duración de 4s
-    try:
-        os.system(f"ffmpeg -y -f lavfi -i color=c=black:s=640x360 -t {scene['duration_seconds']} -pix_fmt yuv420p {output_path} >/dev/null 2>&1")
-    except Exception:
-        # Fallback simple
+    # Obtener el ejecutable de ffmpeg (priorizando el embebido en imageio_ffmpeg)
+    ffmpeg_exe = "ffmpeg"
+    if imageio_ffmpeg is not None:
+        try:
+            ffmpeg_exe = imageio_ffmpeg.get_ffmpeg_exe()
+        except Exception:
+            pass
+            
+    # Intentamos crear un video real en negro con duración de 4s
+    cmd = f'"{ffmpeg_exe}" -y -f lavfi -i color=c=black:s=640x360 -t {scene["duration_seconds"]} -pix_fmt yuv420p "{output_path}" >/dev/null 2>&1'
+    status = os.system(cmd)
+    
+    # Si falló o el archivo no existe/está vacío, usamos un fallback de bytes
+    if status != 0 or not os.path.exists(output_path) or os.path.getsize(output_path) == 0:
         with open(output_path, "wb") as f:
             f.write(b"MOCK VIDEO DATA" * 1000)
+            
     print(f"   Saved to: {output_path}")
     return output_path
 
-def render_scene_via_vertex(scene, config, output_dir):
+def upload_to_gcs(local_path, project_id, bucket_name, region="us-central1"):
     """
-    Realiza la llamada real de API a Vertex AI (Google Veo / Imagen).
+    Sube un archivo local a un bucket de Google Cloud Storage y retorna la URI gs://.
     """
-    output_path = os.path.join(output_dir, scene["output_name"])
-    print(f"🚀 [GCP VERTEX AI] Llamando al motor de renderizado para {scene['output_name']}...")
+    print(f"   [GCS] Subiendo {local_path} al bucket '{bucket_name}'...")
     
-    if aiplatform is None:
-        print("❌ Error: SDK de Google Cloud AI Platform no instalado. Ejecuta pip install -r requirements.txt")
+    if storage is None:
+        print("❌ Error: SDK de Google Cloud Storage no instalado.")
         sys.exit(1)
         
-    # Inicializa el cliente
-    aiplatform.init(project=config["gcp_project_id"], location=config["gcp_region"])
+    storage_client = storage.Client(project=project_id)
     
-    # Estructura del API call real (ejemplo con Vertex AI Video Generation)
-    # En producción real, aquí se consume el endpoint de generación de video de Google Veo
-    print(f"   Conectando a endpoint de video...")
-    print(f"   Enviando Prompt: {scene['prompt'][:100]}...")
+    # Obtener o crear el bucket
+    try:
+        bucket = storage_client.get_bucket(bucket_name)
+    except Exception:
+        print(f"   [GCS] El bucket '{bucket_name}' no existe. Intentando crearlo...")
+        try:
+            bucket = storage_client.create_bucket(bucket_name, location=region)
+            print(f"   [GCS] Bucket '{bucket_name}' creado con éxito.")
+        except Exception as e:
+            print(f"   [GCS] Error al crear el bucket: {e}")
+            print(f"   Por favor, crea un bucket manualmente e indica su nombre en config.json como 'gcs_bucket_name'.")
+            sys.exit(1)
+            
+    blob_name = os.path.basename(local_path)
+    blob = bucket.blob(blob_name)
+    blob.upload_from_filename(local_path)
     
-    # Placeholder de ejecución real de Vertex AI:
-    # model = aiplatform.VideoGenerationModel.from_pretrained("veo-video-001")
-    # operation = model.generate_video(prompt=scene["prompt"], duration_seconds=scene["duration_seconds"])
-    # result = operation.result()
-    # result.video.save(output_path)
+    gcs_uri = f"gs://{bucket_name}/{blob_name}"
+    print(f"   [GCS] Archivo subido con éxito: {gcs_uri}")
+    return gcs_uri
+
+def render_scene_via_vertex(scene, config, output_dir):
+    """
+    Realiza la llamada real de API a Vertex AI usando el SDK google-genai para Veo/Imagen.
+    """
+    output_path = os.path.join(output_dir, scene["output_name"])
+    print(f"\n🚀 [GCP VERTEX AI] Iniciando renderizado real para {scene['output_name']}...")
     
-    # Para efectos del lab inicial, si es local simulamos la creación del archivo
-    return mock_render_scene(scene, output_dir)
+    if genai is None or types is None:
+        print("❌ Error: SDK 'google-genai' no instalado. Ejecuta: pip install -r requirements.txt")
+        sys.exit(1)
+        
+    project_id = config["gcp_project_id"]
+    region = config["gcp_region"]
+    
+    # Inicializar el cliente unificado de GenAI para Vertex AI
+    client = genai.Client(vertexai=True, project=project_id, location=region)
+    
+    # Determinar el ID del modelo a usar
+    default_model = "veo-3.0-generate-preview" if scene["type"] == "image-to-video" else "veo-2.0-generate-001"
+    model_name = config.get("veo_model_id", default_model)
+    
+    # Configurar parámetros de llamada de video
+    video_config = types.GenerateVideosConfig(
+        number_of_videos=1,
+        aspect_ratio="16:9",
+        duration_seconds=scene["duration_seconds"],
+    )
+    
+    image_ref = None
+    if scene["type"] == "image-to-video":
+        local_image = scene["seed_image"]
+        if not os.path.exists(local_image):
+            print(f"❌ Error: No se encontró la imagen semilla local en: {local_image}")
+            sys.exit(1)
+            
+        # Determinar el nombre del bucket de GCS
+        bucket_name = config.get("gcs_bucket_name", f"{project_id}-seeds")
+        
+        # Subir a GCS para que Vertex AI pueda acceder
+        gcs_uri = upload_to_gcs(local_image, project_id, bucket_name, region)
+        
+        # Asignar la referencia de imagen
+        image_ref = types.Image(
+            uri=gcs_uri,
+            mime_type="image/png"
+        )
+        
+    print(f"   Enviando solicitud a Veo ({model_name})...")
+    print(f"   Prompt: \"{scene['prompt'][:100]}...\"")
+    
+    try:
+        if image_ref:
+            operation = client.models.generate_videos(
+                model=model_name,
+                prompt=scene["prompt"],
+                image=image_ref,
+                config=video_config
+            )
+        else:
+            operation = client.models.generate_videos(
+                model=model_name,
+                prompt=scene["prompt"],
+                config=video_config
+            )
+            
+        print("   Operación iniciada en Vertex AI. Esperando renderizado (esto toma un par de minutos)...")
+        
+        # Esperar la respuesta (polling automático de la API)
+        result = operation.result()
+        
+        # Descargar el video generado
+        generated_video = result.generated_videos[0]
+        print(f"   ¡Video renderizado con éxito por Vertex AI!")
+        print(f"   Descargando video generado...")
+        
+        client.files.download(file=generated_video.video)
+        generated_video.video.save(output_path)
+        print(f"   Guardado localmente en: {output_path}")
+        return output_path
+        
+    except Exception as e:
+        print(f"❌ Error en la llamada a Vertex AI: {e}")
+        print("   Asegúrate de estar autenticado ('gcloud auth application-default login')")
+        print("   y de tener acceso al modelo en tu proyecto.")
+        sys.exit(1)
 
 def stitch_scenes(config, source_dir):
     """

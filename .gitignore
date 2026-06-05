@@ -1,0 +1,22 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Project Outputs (Generated videos)
+assets/output/
+*.mp4
+*.webm
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# FinOps local ledger
+finops_ledger.json

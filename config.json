@@ -1,6 +1,8 @@
 {
   "gcp_project_id": "mx-coatl-aicondesa-workshop02",
   "gcp_region": "us-central1",
+  "gcs_bucket_name": "mx-coatl-aicondesa-workshop02-seeds",
+  "veo_model_id": "veo-2.0-generate-001",
   "finops": {
     "max_monthly_budget_usd": 15.0,
     "max_execution_cost_usd": 5.0,
@@ -13,15 +15,15 @@
   "scenes": [
     {
       "id": 1,
-      "type": "text-to-video",
+      "type": "image-to-video",
+      "seed_image": "assets/seed_asset.png",
       "prompt": "Cinematic medium close-up, a cyberpunk SRE engineer drinking from a classic red Coca-Cola can, wearing glowing AR glasses reflecting subtle red alert data, neon purple and teal light accents, raindrops on window in background, blurred futuristic skyline of Mexico City at night, rainy atmosphere, photorealistic, 8k resolution, anamorphic lens, 24fps.",
       "duration_seconds": 4,
       "output_name": "scene1_alert.mp4"
     },
     {
       "id": 2,
-      "type": "image-to-video",
-      "seed_image": "assets/seed_asset.png",
+      "type": "text-to-video",
       "prompt": "Close-up of a glowing 3D holographic network interface floating in the air, a critical node transitions from blinking red to solid emerald green with cybernetic glyphs, fingers gently swiping through the digital light, high-tech HUD, volumetric lighting, dark room, highly detailed, octane render, 4k.",
       "duration_seconds": 4,
       "output_name": "scene2_remediation.mp4"
