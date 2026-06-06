@@ -134,19 +134,16 @@ def mock_render_scene(scene, output_dir):
     print(f"   Saved to: {output_path}")
     return output_path
 
-def upload_to_gcs(local_path, project_id, bucket_name, region="us-central1"):
+def ensure_gcs_bucket_exists(project_id, bucket_name, region="us-central1"):
     """
-    Sube un archivo local a un bucket de Google Cloud Storage y retorna la URI gs://.
+    Verifica si un bucket de GCS existe. Si no, lo crea.
     """
-    print(f"   [GCS] Subiendo {local_path} al bucket '{bucket_name}'...")
-    
     if storage is None:
         print("❌ Error: SDK de Google Cloud Storage no instalado.")
         sys.exit(1)
         
     storage_client = storage.Client(project=project_id)
     
-    # Obtener o crear el bucket
     try:
         bucket = storage_client.get_bucket(bucket_name)
     except Exception:
@@ -158,7 +155,15 @@ def upload_to_gcs(local_path, project_id, bucket_name, region="us-central1"):
             print(f"   [GCS] Error al crear el bucket: {e}")
             print(f"   Por favor, crea un bucket manualmente e indica su nombre en config.json como 'gcs_bucket_name'.")
             sys.exit(1)
-            
+    return bucket
+
+def upload_to_gcs(local_path, project_id, bucket_name, region="us-central1"):
+    """
+    Sube un archivo local a un bucket de Google Cloud Storage y retorna la URI gs://.
+    """
+    print(f"   [GCS] Subiendo {local_path} al bucket '{bucket_name}'...")
+    bucket = ensure_gcs_bucket_exists(project_id, bucket_name, region)
+    
     blob_name = os.path.basename(local_path)
     blob = bucket.blob(blob_name)
     blob.upload_from_filename(local_path)
@@ -180,19 +185,27 @@ def render_scene_via_vertex(scene, config, output_dir):
         
     project_id = config["gcp_project_id"]
     region = config["gcp_region"]
+    bucket_name = config.get("gcs_bucket_name", f"{project_id}-seeds")
+    
+    # Asegurarnos de que el bucket de GCS exista (necesario para guardar los outputs de Vertex AI)
+    ensure_gcs_bucket_exists(project_id, bucket_name, region)
     
     # Inicializar el cliente unificado de GenAI para Vertex AI
     client = genai.Client(vertexai=True, project=project_id, location=region)
     
     # Determinar el ID del modelo a usar
-    default_model = "veo-3.0-generate-preview" if scene["type"] == "image-to-video" else "veo-2.0-generate-001"
-    model_name = config.get("veo_model_id", default_model)
+    default_model = "veo-2.0-generate-001"
+    model_name = scene.get("model", scene.get("veo_model_id", config.get("veo_model_id", default_model)))
+    print(f"\n[MODEL RESOLUTION] Using model: {model_name} for scene {scene['id']}")
     
     # Configurar parámetros de llamada de video
+    # Indicamos el output_gcs_uri para que Vertex AI guarde el video en nuestro bucket y podamos verlo en el navegador
+    output_gcs_dir = f"gs://{bucket_name}/output/"
     video_config = types.GenerateVideosConfig(
         number_of_videos=1,
         aspect_ratio="16:9",
         duration_seconds=scene["duration_seconds"],
+        output_gcs_uri=output_gcs_dir,
     )
     
     image_ref = None
@@ -202,15 +215,12 @@ def render_scene_via_vertex(scene, config, output_dir):
             print(f"❌ Error: No se encontró la imagen semilla local en: {local_image}")
             sys.exit(1)
             
-        # Determinar el nombre del bucket de GCS
-        bucket_name = config.get("gcs_bucket_name", f"{project_id}-seeds")
-        
         # Subir a GCS para que Vertex AI pueda acceder
         gcs_uri = upload_to_gcs(local_image, project_id, bucket_name, region)
         
         # Asignar la referencia de imagen
         image_ref = types.Image(
-            uri=gcs_uri,
+            gcs_uri=gcs_uri,
             mime_type="image/png"
         )
         
@@ -234,18 +244,64 @@ def render_scene_via_vertex(scene, config, output_dir):
             
         print("   Operación iniciada en Vertex AI. Esperando renderizado (esto toma un par de minutos)...")
         
-        # Esperar la respuesta (polling automático de la API)
-        result = operation.result()
-        
-        # Descargar el video generado
-        generated_video = result.generated_videos[0]
-        print(f"   ¡Video renderizado con éxito por Vertex AI!")
-        print(f"   Descargando video generado...")
-        
-        client.files.download(file=generated_video.video)
-        generated_video.video.save(output_path)
-        print(f"   Guardado localmente en: {output_path}")
-        return output_path
+        # Esperar la respuesta mediante polling
+        import time
+        while not operation.done:
+            print("   Esperando renderizado en Vertex AI (revisando en 15 segundos)...")
+            time.sleep(15)
+            operation = client.operations.get(operation)
+            
+        if operation.error:
+            if isinstance(operation.error, dict):
+                error_msg = operation.error.get('message', 'Sin mensaje')
+                error_code = operation.error.get('code', 'Sin código')
+            else:
+                error_msg = getattr(operation.error, 'message', 'Sin mensaje')
+                error_code = getattr(operation.error, 'code', 'Sin código')
+            raise Exception(f"La operación falló en Vertex AI con el error: {error_msg} (Código: {error_code})")
+
+        if operation.response and operation.response.generated_videos:
+            generated_video = operation.response.generated_videos[0]
+            video_obj = generated_video.video
+            print(f"   ¡Video renderizado con éxito por Vertex AI!")
+            
+            if video_obj.video_bytes:
+                print(f"   Guardando video desde los bytes de la respuesta...")
+                with open(output_path, "wb") as f:
+                    f.write(video_obj.video_bytes)
+                print(f"   Guardado localmente en: {output_path}")
+                return output_path
+            elif video_obj.uri:
+                print(f"   El video está almacenado en: {video_obj.uri}")
+                if video_obj.uri.startswith("gs://"):
+                    print(f"   Descargando video desde GCS...")
+                    try:
+                        gcs_path = video_obj.uri[5:]
+                        parts = gcs_path.split("/", 1)
+                        res_bucket = parts[0]
+                        res_blob = parts[1]
+                        
+                        storage_client = storage.Client(project=project_id)
+                        bucket = storage_client.bucket(res_bucket)
+                        blob = bucket.blob(res_blob)
+                        blob.download_to_filename(output_path)
+                        print(f"   Guardado localmente en: {output_path}")
+                        return output_path
+                    except Exception as gcs_err:
+                        raise Exception(f"Error al descargar desde GCS ({video_obj.uri}): {gcs_err}")
+                else:
+                    try:
+                        import urllib.request
+                        print(f"   Descargando video vía HTTP...")
+                        urllib.request.urlretrieve(video_obj.uri, output_path)
+                        print(f"   Guardado localmente en: {output_path}")
+                        return output_path
+                    except Exception as http_err:
+                        raise Exception(f"Error al descargar desde URL HTTP ({video_obj.uri}): {http_err}")
+            else:
+                raise Exception("La respuesta de Vertex AI no contiene ni bytes de video ni una URI para descargar.")
+        else:
+            raise Exception("La operación de Vertex AI completó, pero no devolvió ningún video y no tiene un error especificado.")
         
     except Exception as e:
         print(f"❌ Error en la llamada a Vertex AI: {e}")
@@ -291,6 +347,10 @@ def main():
     args = parser.parse_args()
     
     config = load_config(args.config)
+    print("\n==================================================")
+    print("⚙️  LOADED CONFIGURATION:")
+    print(json.dumps(config, indent=2))
+    print("==================================================")
     
     # Crear directorios base
     os.makedirs("assets/output", exist_ok=True)

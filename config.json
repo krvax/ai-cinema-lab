@@ -16,25 +16,21 @@
     {
       "id": 1,
       "type": "image-to-video",
-      "seed_image": "assets/seed_asset.png",
-      "prompt": "Cinematic medium close-up, a cyberpunk SRE engineer drinking from a classic red Coca-Cola can, wearing glowing AR glasses reflecting subtle red alert data, neon purple and teal light accents, raindrops on window in background, blurred futuristic skyline of Mexico City at night, rainy atmosphere, photorealistic, 8k resolution, anamorphic lens, 24fps.",
-      "duration_seconds": 4,
-      "output_name": "scene1_alert.mp4"
+      "model": "veo-2.0-generate-001",
+      "seed_image": "assets/can_sleeve_closeup.png",
+      "prompt": "Cinematic macro product shot. A hand smoothly slides the red beverage sleeve over an aluminum can. Focus on the transformation. Premium product commercial. Realistic office environment. Shallow depth of field. Photorealistic.",
+      "duration_seconds": 5,
+      "output_name": "scene1_transform.mp4"
     },
     {
       "id": 2,
-      "type": "text-to-video",
-      "prompt": "Close-up of a glowing 3D holographic network interface floating in the air, a critical node transitions from blinking red to solid emerald green with cybernetic glyphs, fingers gently swiping through the digital light, high-tech HUD, volumetric lighting, dark room, highly detailed, octane render, 4k.",
-      "duration_seconds": 4,
-      "output_name": "scene2_remediation.mp4"
-    },
-    {
-      "id": 3,
-      "type": "text-to-video",
-      "prompt": "Wide cinematic shot of a futuristic control room with a massive glass window, a programmer looking out at a cyberpunk Mexico City skyline during sunrise, warm golden and orange light cutting through morning fog, neon lights turning off, slow camera pull back, peaceful mood, photorealistic, 8k, highly detailed.",
-      "duration_seconds": 4,
-      "output_name": "scene3_sunrise.mp4"
+      "type": "image-to-video",
+      "model": "veo-2.0-generate-001",
+      "seed_image": "assets/can_sleeve_closeup.png",
+      "prompt": "The covered beverage can stands on the wooden desk. Small condensation droplets slowly form on the surface of the sleeve. Soft office light reflects across the material. The camera performs a slow cinematic push-in toward the product. Premium product commercial. Photorealistic.",
+      "duration_seconds": 5,
+      "output_name": "scene2_showcase.mp4"
     }
   ],
-  "output_movie": "assets/output/the_silent_edge_final.mp4"
+  "output_movie": "assets/output/hide_in_plain_sight.mp4"
 }
