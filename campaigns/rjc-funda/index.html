@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>R&JC FundaCerveza — Case Study | AI Cinema Lab</title>
+  <meta name="description" content="Primera campaña producida por AI Cinema Lab. Funda térmica stealth para latas de cerveza. Storyboard, fotos de producto y estrategia creativa generados con IA."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --surface: #131313;
+      --surface-container: #201f1f;
+      --surface-container-high: #2a2a2a;
+      --surface-container-highest: #353534;
+      --surface-container-low: #1c1b1b;
+      --surface-container-lowest: #0e0e0e;
+      --surface-bright: #3a3939;
+      --on-surface: #e5e2e1;
+      --on-surface-variant: #b9cbc2;
+      --outline: #83958d;
+      --outline-variant: #3a4a44;
+      --primary: #00ffcc;
+      --primary-dim: #00e0b3;
+      --primary-container: #00ffcc;
+      --on-primary-container: #00725a;
+      --secondary: #00ff88;
+      --tertiary: #0066ff;
+      --error: #ffb4ab;
+      --error-container: #93000a;
+      --font-headline: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--surface);
+      color: var(--on-surface);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,255,204,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 90%, rgba(0,102,255,0.03) 0%, transparent 60%),
+        linear-gradient(to bottom right, #050505, #001f18 50%, #050505);
+      background-size: 200% 200%;
+      animation: ambientDrift 20s ease infinite;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    @keyframes ambientDrift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ─── Typography ─── */
+    h1, h2, h3 { font-family: var(--font-headline); letter-spacing: -0.02em; }
+
+    .mono { font-family: var(--font-mono); }
+
+    .text-glow {
+      text-shadow: 0 0 12px rgba(0,255,204,0.5), 0 0 40px rgba(0,255,204,0.15);
+    }
+
+    /* ─── Glass Panel ─── */
+    .glass {
+      background: rgba(32,31,31,0.7);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border: 1px solid rgba(58,74,68,0.25);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(0,255,204,0.08), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glass:hover::before { opacity: 1; }
+    .glass > * { position: relative; z-index: 1; }
+
+    /* ─── Layout ─── */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    @media (min-width: 768px) {
+      .container { padding: 0 64px; }
+    }
+
+    /* ─── Navigation ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(19,19,19,0.8);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border-bottom: 1px solid rgba(58,74,68,0.2);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @media (min-width: 768px) {
+      nav { padding: 12px 64px; }
+    }
+
+    nav .brand {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    nav .tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      color: var(--on-surface-variant);
+      background: var(--surface-container-highest);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,255,204,0.2);
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: 140px 0 80px;
+      text-align: center;
+    }
+
+    .hero .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      background: rgba(0,255,204,0.08);
+      border: 1px solid rgba(0,255,204,0.25);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .hero .badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 8px rgba(0,255,204,0.8);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 700;
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 .accent { color: var(--primary); }
+
+    .hero .subtitle {
+      font-size: 18px;
+      color: var(--on-surface-variant);
+      max-width: 640px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    .hero .metrics {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .hero .metric {
+      text-align: center;
+    }
+
+    .hero .metric .value {
+      font-family: var(--font-headline);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .hero .metric .label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ─── Section Headers ─── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(58,74,68,0.3);
+    }
+
+    .section-header h2 {
+      font-size: 24px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-header h2 .material-symbols-outlined {
+      color: var(--primary);
+      font-size: 24px;
+    }
+
+    .section-header .sys-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--on-surface-variant);
+      letter-spacing: 0.05em;
+    }
+
+    section { margin-bottom: 64px; }
+
+    /* ─── Storyboard Grid ─── */
+    .storyboard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .storyboard-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .story-card {
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.4s, box-shadow 0.4s;
+    }
+
+    .story-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,255,204,0.12);
+    }
+
+    .story-card .frame {
+      position: relative;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      background: var(--surface-container);
+    }
+
+    .story-card .frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease, filter 0.4s;
+    }
+
+    .story-card:hover .frame img {
+      transform: scale(1.06);
+    }
+
+    .story-card .frame .overlay-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      background: rgba(14,14,14,0.85);
+      backdrop-filter: blur(12px);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,255,204,0.3);
+    }
+
+    .story-card .frame .timing {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--on-surface);
+      background: rgba(14,14,14,0.85);
+      backdrop-filter: blur(12px);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .story-card .info {
+      padding: 16px 20px;
+      background: var(--surface-container-low);
+      border-top: 1px solid rgba(58,74,68,0.2);
+    }
+
+    .story-card .info h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .story-card .info .script {
+      font-size: 14px;
+      color: var(--on-surface-variant);
+      font-style: italic;
+    }
+
+    /* ─── Product Gallery ─── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .product-card {
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.4s, box-shadow 0.4s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,255,204,0.12);
+    }
+
+    .product-card .photo {
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      background: var(--surface-container);
+      position: relative;
+    }
+
+    .product-card .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+
+    .product-card:hover .photo img {
+      transform: scale(1.04);
+    }
+
+    .product-card .photo .badge-corner {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #131313;
+      background: var(--primary);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .product-card .caption {
+      padding: 16px 20px;
+      background: var(--surface-container-low);
+      border-top: 1px solid rgba(58,74,68,0.2);
+    }
+
+    .product-card .caption h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .product-card .caption p {
+      font-size: 13px;
+      color: var(--on-surface-variant);
+      line-height: 1.5;
+    }
+
+    /* ─── Brief / Versions ─── */
+    .brief-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .brief-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .brief-card {
+      padding: 24px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .brief-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,255,204,0.1);
+    }
+
+    .brief-card .version-badge {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 4px 12px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-self: flex-start;
+    }
+
+    .brief-card .version-badge.a {
+      color: var(--primary);
+      background: rgba(0,255,204,0.1);
+      border: 1px solid rgba(0,255,204,0.3);
+    }
+    .brief-card .version-badge.b {
+      color: var(--secondary);
+      background: rgba(0,255,136,0.1);
+      border: 1px solid rgba(0,255,136,0.3);
+    }
+    .brief-card .version-badge.c {
+      color: var(--tertiary);
+      background: rgba(0,102,255,0.1);
+      border: 1px solid rgba(0,102,255,0.3);
+    }
+
+    .brief-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .brief-card .concept {
+      font-size: 14px;
+      color: var(--on-surface-variant);
+      line-height: 1.6;
+    }
+
+    .brief-card .tone {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid rgba(58,74,68,0.2);
+    }
+
+    .recommended {
+      border-color: rgba(0,255,136,0.4) !important;
+      box-shadow: 0 0 20px rgba(0,255,136,0.06);
+    }
+    .recommended::after {
+      content: '★ RECOMENDADA';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--secondary);
+    }
+
+    /* ─── Insight Block ─── */
+    .insight-block {
+      padding: 32px;
+      border-radius: 16px;
+      border-left: 3px solid var(--primary);
+      background: rgba(0,255,204,0.03);
+      margin-bottom: 48px;
+    }
+
+    .insight-block .quote {
+      font-size: 20px;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      color: var(--on-surface);
+    }
+
+    .insight-block .attribution {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--on-surface-variant);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── Persona Table ─── */
+    .persona-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .persona-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(58,74,68,0.15);
+      vertical-align: top;
+    }
+
+    .persona-table td:first-child {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      white-space: nowrap;
+      width: 180px;
+    }
+
+    .persona-table td:last-child {
+      color: var(--on-surface);
+    }
+
+    /* ─── Territory Comparison ─── */
+    .territory-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .territory-col {
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .territory-col.bad {
+      background: rgba(255,180,171,0.05);
+      border: 1px solid rgba(255,180,171,0.15);
+    }
+
+    .territory-col.good {
+      background: rgba(0,255,204,0.04);
+      border: 1px solid rgba(0,255,204,0.2);
+    }
+
+    .territory-col h4 {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .territory-col.bad h4 { color: var(--error); }
+    .territory-col.good h4 { color: var(--primary); }
+
+    .territory-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .territory-col ul li {
+      font-size: 13px;
+      color: var(--on-surface-variant);
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .territory-col.bad ul li::before { content: '✗'; position: absolute; left: 0; color: var(--error); }
+    .territory-col.good ul li::before { content: '✓'; position: absolute; left: 0; color: var(--primary); }
+
+    /* ─── Pipeline Steps ─── */
+    .pipeline {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .pipeline { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .pipe-step {
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .pipe-step:hover { transform: translateY(-3px); }
+
+    .pipe-step .step-num {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .pipe-step h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .pipe-step p {
+      font-size: 13px;
+      color: var(--on-surface-variant);
+      line-height: 1.5;
+    }
+
+    /* ─── FinOps Widget ─── */
+    .finops-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-radius: 12px;
+      background: rgba(0,255,204,0.04);
+      border: 1px solid rgba(0,255,204,0.15);
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 48px;
+    }
+
+    .finops-bar .fin-item {
+      text-align: center;
+    }
+
+    .finops-bar .fin-item .fin-value {
+      font-family: var(--font-headline);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .finops-bar .fin-item .fin-value.zero { color: var(--secondary); }
+
+    .finops-bar .fin-item .fin-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* ─── Back link ─── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--on-surface-variant);
+      text-decoration: none;
+      transition: color 0.3s;
+      margin-bottom: 24px;
+    }
+
+    .back-link:hover { color: var(--primary); }
+    .back-link .material-symbols-outlined { font-size: 18px; }
+
+    /* ─── Footer ─── */
+    footer {
+      background: var(--surface-container-lowest);
+      border-top: 1px solid rgba(58,74,68,0.2);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      footer { padding: 32px 64px; }
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--on-surface-variant);
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+
+    /* ─── Scroll reveal ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Lightbox ─── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(5,5,5,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      padding: 40px;
+    }
+
+    .lightbox.active { display: flex; }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 0 60px rgba(0,255,204,0.15);
+    }
+
+    .lightbox .close-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--on-surface);
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .lightbox .close-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 767px) {
+      .territory-grid { grid-template-columns: 1fr; }
+      .hero .metrics { gap: 20px; }
+      .persona-table td:first-child { width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a href="../../index.html" class="brand">← AI Cinema Lab</a>
+  <span class="tag">CAMPAIGN_001 // RJC-FUNDA</span>
+</nav>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="close-btn" onclick="closeLightbox()">
+    <span class="material-symbols-outlined">close</span>
+  </button>
+  <img id="lightbox-img" src="" alt="Zoom"/>
+</div>
+
+<main class="container">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="badge"><span class="dot"></span> Case Study #001</div>
+    <h1>R&JC <span class="accent text-glow">FundaCerveza</span></h1>
+    <p class="subtitle">
+      Funda térmica stealth de silicón para latas de 473ml. 
+      La primera campaña producida íntegramente por AI Cinema Lab — 
+      del concepto creativo al storyboard listo para TikTok.
+    </p>
+    <div class="metrics">
+      <div class="metric">
+        <div class="value">3</div>
+        <div class="label">Versiones A/B/C</div>
+      </div>
+      <div class="metric">
+        <div class="value">4</div>
+        <div class="label">Ángulos creativos</div>
+      </div>
+      <div class="metric">
+        <div class="value">$0</div>
+        <div class="label">Costo de assets</div>
+      </div>
+      <div class="metric">
+        <div class="value">$231</div>
+        <div class="label">Precio retail MXN</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Insight -->
+  <div class="insight-block reveal">
+    <div class="quote">"Nadie compra una funda de silicón. Compran ser el compa que siempre trae todo resuelto."</div>
+    <div class="attribution">— Insight Central del Creative Brief</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- STORYBOARD -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-header">
+      <h2><span class="material-symbols-outlined">movie</span> Storyboard Visual</h2>
+      <span class="sys-tag">[SB_V1.0]</span>
+    </div>
+
+    <div class="storyboard-grid">
+      <!-- Shot 1 -->
+      <div class="story-card glass" onclick="openLightbox('assets/storyboard_shot_1.png')">
+        <div class="frame">
+          <img src="assets/storyboard_shot_1.png" alt="Shot 1 — Hook: La mejor compra para el verano" loading="lazy"/>
+          <span class="overlay-tag">SHOT 01</span>
+          <span class="timing">0-2s</span>
+        </div>
+        <div class="info">
+          <h3>Hook</h3>
+          <p class="script">"La mejor compra para el verano no es lo que crees..."</p>
+        </div>
+      </div>
+
+      <!-- Shot 2 -->
+      <div class="story-card glass" onclick="openLightbox('assets/storyboard_shot_2.png')">
+        <div class="frame">
+          <img src="assets/storyboard_shot_2.png" alt="Shot 2 — Setup: Todo el mundo piensa que es normal" loading="lazy"/>
+          <span class="overlay-tag">SHOT 02</span>
+          <span class="timing">2-5s</span>
+        </div>
+        <div class="info">
+          <h3>Setup</h3>
+          <p class="script">"Todo el mundo piensa que es una lata normal..."</p>
+        </div>
+      </div>
+
+      <!-- Shot 3 -->
+      <div class="story-card glass" onclick="openLightbox('assets/storyboard_shot_3.png')">
+        <div class="frame">
+          <img src="assets/storyboard_shot_3.png" alt="Shot 3 — The Reveal: Hasta que ven esto" loading="lazy"/>
+          <span class="overlay-tag">SHOT 03</span>
+          <span class="timing">5-8s</span>
+        </div>
+        <div class="info">
+          <h3>The Reveal</h3>
+          <p class="script">"...hasta que ven esto."</p>
+        </div>
+      </div>
+
+      <!-- Shot 4 -->
+      <div class="story-card glass" onclick="openLightbox('assets/storyboard_shot_4.png')">
+        <div class="frame">
+          <img src="assets/storyboard_shot_4.png" alt="Shot 4 — ASMR: Close-up condensación" loading="lazy"/>
+          <span class="overlay-tag">SHOT 04</span>
+          <span class="timing">8-12s</span>
+        </div>
+        <div class="info">
+          <h3>ASMR Close-Up</h3>
+          <p class="script">Close-up a la condensación del silicón. Satisfying.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PRODUCT GALLERY -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-header">
+      <h2><span class="material-symbols-outlined">photo_camera</span> Galería de Producto</h2>
+      <span class="sys-tag">[SCALE_CORRECTED]</span>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card glass" onclick="openLightbox('assets/funda_camuflaje.png')">
+        <div class="photo">
+          <img src="assets/funda_camuflaje.png" alt="Funda camuflaje completo — parece una lata de refresco" loading="lazy"/>
+          <span class="badge-corner">HERO SHOT</span>
+        </div>
+        <div class="caption">
+          <h3>Camuflaje Completo</h3>
+          <p>La funda cubre la lata de cerveza de 473ml completamente. A primera vista, parece una lata de refresco de cola. Proporciones mano-lata realistas (~70% altura de la mano).</p>
+        </div>
+      </div>
+
+      <div class="product-card glass" onclick="openLightbox('assets/funda_reveal.png')">
+        <div class="photo">
+          <img src="assets/funda_reveal.png" alt="Funda reveal — deslizamiento de la funda" loading="lazy"/>
+          <span class="badge-corner">REVEAL</span>
+        </div>
+        <div class="caption">
+          <h3>El Reveal (Deslizado)</h3>
+          <p>La funda se desliza hacia abajo revelando el borde metálico de la lata de cerveza. Textura realista del silicón con acabado mate. Escala corregida con prompt engineering avanzado.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="finops-bar reveal">
+      <div class="fin-item">
+        <div class="fin-value zero">$0.00</div>
+        <div class="fin-label">Costo de generación</div>
+      </div>
+      <div class="fin-item">
+        <div class="fin-value">Nano Banana</div>
+        <div class="fin-label">Modelo (local/gratis)</div>
+      </div>
+      <div class="fin-item">
+        <div class="fin-value">473ml</div>
+        <div class="fin-label">Escala anclada</div>
+      </div>
+      <div class="fin-item">
+        <div class="fin-value">6</div>
+        <div class="fin-label">Assets generados</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- BUYER PERSONA -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-header">
+      <h2><span class="material-symbols-outlined">person</span> Buyer Persona</h2>
+      <span class="sys-tag">[MKT_DATA]</span>
+    </div>
+
+    <div class="glass" style="padding: 24px; border-radius: 16px;">
+      <table class="persona-table">
+        <tr><td>Edad</td><td>22-35 años</td></tr>
+        <tr><td>Género</td><td>Predominantemente masculino</td></tr>
+        <tr><td>Contexto</td><td>Carnes asadas, reuniones, domingos de fut</td></tr>
+        <tr><td>Motivación</td><td>Identidad social > funcionalidad</td></tr>
+        <tr><td>Trigger</td><td>"¿Dónde la compraste?"</td></tr>
+        <tr><td>Plataforma</td><td>TikTok, Instagram Reels</td></tr>
+        <tr><td>Precio</td><td>$231.83 MXN (~$12 USD) — compra impulsiva</td></tr>
+      </table>
+    </div>
+
+    <!-- Territory comparison -->
+    <div class="territory-grid reveal">
+      <div class="territory-col bad">
+        <h4>❌ Funcional (no vender así)</h4>
+        <ul>
+          <li>"Mantiene fría tu cerveza"</li>
+          <li>"No resbala"</li>
+          <li>"No moja la mesa"</li>
+          <li>"Silicón térmico de alta calidad"</li>
+        </ul>
+      </div>
+      <div class="territory-col good">
+        <h4>✅ Identidad (vender así)</h4>
+        <ul>
+          <li>"El compa que siempre trae la chela perfecta"</li>
+          <li>"Todos preguntaron dónde la compré"</li>
+          <li>"La mejora más barata para tu cerveza"</li>
+          <li>"El accesorio favorito de las carnes asadas"</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- 3 COMMERCIAL VERSIONS -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-header">
+      <h2><span class="material-symbols-outlined">science</span> Versiones del Comercial (A/B/C Test)</h2>
+      <span class="sys-tag">[AB_TEST_MATRIX]</span>
+    </div>
+
+    <div class="brief-grid">
+      <!-- Version A -->
+      <div class="brief-card glass">
+        <span class="version-badge a">🅰️ Versión A</span>
+        <h3>Problema / Solución</h3>
+        <p class="concept">
+          El contraste entre la lata "normal" y la lata con funda. Simple y directo.
+          Limpio, satisfactorio, aspiracional. El más seguro.
+        </p>
+        <div class="tone">⏱ 15 seg · Tono: Limpio</div>
+      </div>
+
+      <!-- Version B -->
+      <div class="brief-card glass recommended">
+        <span class="version-badge b">🅱️ Versión B</span>
+        <h3>Lifestyle / Identidad</h3>
+        <p class="concept">
+          Llegas a la carne asada. Todos con latas normales. Tú traes la funda. 
+          Todos voltean. "¿Dónde la compraste?"
+        </p>
+        <div class="tone">⏱ 18 seg · Tono: Aspiracional</div>
+      </div>
+
+      <!-- Version C -->
+      <div class="brief-card glass">
+        <span class="version-badge c">🅲 Versión C</span>
+        <h3>Humor / Viral</h3>
+        <p class="concept">
+          Un wey protege más su funda que su cerveza. La del amigo (sin funda) 
+          se cae por la condensación. "Por algo la cuido."
+        </p>
+        <div class="tone">⏱ 15 seg · Tono: Cómico</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- PRODUCTION PIPELINE -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-header">
+      <h2><span class="material-symbols-outlined">schema</span> Pipeline de Producción</h2>
+      <span class="sys-tag">[PL_EXEC_RJC]</span>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipe-step glass">
+        <div class="step-num">01</div>
+        <h3>Concepto</h3>
+        <p>Creative brief con insight, buyer persona y 3 versiones A/B/C. Aprobación del CFO con storyboard visual.</p>
+      </div>
+      <div class="pipe-step glass">
+        <div class="step-num">02</div>
+        <h3>Storyboard</h3>
+        <p>4 tomas clave generadas con IA (Nano Banana $0). Escala corregida. 3 variantes en Stitch MCP.</p>
+      </div>
+      <div class="pipe-step glass">
+        <div class="step-num">03</div>
+        <h3>Validación</h3>
+        <p>Enviar storyboard a Carlos. Si aprueba → producción. Si no → iterar. Costo de iteración: $0.</p>
+      </div>
+      <div class="pipe-step glass">
+        <div class="step-num">04</div>
+        <h3>Producción</h3>
+        <p>Generación de video con Veo/Kling. Renderizado gobernado por FinOps shield. Entrega automatizada.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- 4 EXPERIMENTATION ANGLES -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-header">
+      <h2><span class="material-symbols-outlined">psychology</span> Matriz de Experimentación</h2>
+      <span class="sys-tag">[PSY_ANGLES]</span>
+    </div>
+
+    <div class="storyboard-grid">
+      <div class="glass" style="padding: 20px; border-radius: 16px;">
+        <h3 style="margin-bottom: 8px; font-size: 16px;">🎯 Ángulo 1: El Reveal Rápido</h3>
+        <p style="font-size: 13px; color: var(--on-surface-variant); margin-bottom: 8px;">
+          <strong style="color: var(--primary)">Hook:</strong> "Esta lata no es lo que parece."
+        </p>
+        <p style="font-size: 12px; color: var(--on-surface-variant);">
+          Retención altísima. Va directo a la recompensa de dopamina visual. Prioridad 1.
+        </p>
+      </div>
+      <div class="glass" style="padding: 20px; border-radius: 16px;">
+        <h3 style="margin-bottom: 8px; font-size: 16px;">🎬 Ángulo 2: El Magic Trick</h3>
+        <p style="font-size: 13px; color: var(--on-surface-variant); margin-bottom: 8px;">
+          <strong style="color: var(--primary)">Hook:</strong> "El mejor diseño del año."
+        </p>
+        <p style="font-size: 12px; color: var(--on-surface-variant);">
+          Toma cinematográfica. La cámara gira y la lata se transforma. Premium + IA.
+        </p>
+      </div>
+      <div class="glass" style="padding: 20px; border-radius: 16px;">
+        <h3 style="margin-bottom: 8px; font-size: 16px;">😂 Ángulo 3: Prueba Social</h3>
+        <p style="font-size: 13px; color: var(--on-surface-variant); margin-bottom: 8px;">
+          <strong style="color: var(--primary)">Hook:</strong> "Todos pensaron que era refresco..."
+        </p>
+        <p style="font-size: 12px; color: var(--on-surface-variant);">
+          Vende la reacción de los amigos. "¿Dónde la compraste?" Humor implícito.
+        </p>
+      </div>
+      <div class="glass" style="padding: 20px; border-radius: 16px;">
+        <h3 style="margin-bottom: 8px; font-size: 16px;">📱 Ángulo 4: TikTok Made Me Buy It</h3>
+        <p style="font-size: 13px; color: var(--on-surface-variant); margin-bottom: 8px;">
+          <strong style="color: var(--primary)">Hook:</strong> "Cosas que no sabía que necesitaba Parte 17."
+        </p>
+        <p style="font-size: 12px; color: var(--on-surface-variant);">
+          Formato nativo de la plataforma. La gente ya está programada para ver estos videos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- BRAND SAFETY -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-header">
+      <h2><span class="material-symbols-outlined">shield</span> Brand Safety & Compliance</h2>
+      <span class="sys-tag">[COMPLIANCE]</span>
+    </div>
+
+    <div class="territory-grid">
+      <div class="territory-col bad">
+        <h4>❌ Lo que NO decimos</h4>
+        <ul>
+          <li>"Toma en la calle"</li>
+          <li>"Que no te agarre la policía"</li>
+          <li>"Oculta tu chela de la ley"</li>
+          <li>Cualquier referencia a evasión legal</li>
+        </ul>
+      </div>
+      <div class="territory-col good">
+        <h4>✅ Lo que SÍ mostramos</h4>
+        <ul>
+          <li>Sorpresa y diseño divertido</li>
+          <li>Reacción de amigos</li>
+          <li>"Pensé que era refresco" (implícito)</li>
+          <li>Identidad social y pertenencia</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <p>
+    <strong>AI Cinema Lab</strong> · Case Study #001: R&JC FundaCerveza<br/>
+    <a href="../../index.html">← Volver al Pitch Deck</a> · 
+    Producido con Stitch MCP + Nano Banana · Costo de assets: $0.00 USD
+  </p>
+</footer>
+
+<script>
+  // ── Mouse tracking for glass panels ──
+  document.addEventListener('mousemove', e => {
+    document.querySelectorAll('.glass').forEach(el => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    });
+  });
+
+  // ── Scroll reveal ──
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // ── Lightbox ──
+  function openLightbox(src) {
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightbox-img').src = src;
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+
+</body>
+</html>
