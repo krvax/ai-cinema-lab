@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Surprise &amp; Reuse Storyboard - SCENE_02_LIFESTYLE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed": "#1c1b1b",
+                      "inverse-on-surface": "#303030",
+                      "on-primary": "#313030",
+                      "surface-container-highest": "#353535",
+                      "surface-container": "#1f2020",
+                      "primary-fixed-dim": "#c8c6c5",
+                      "primary-container": "#121212",
+                      "outline": "#8e9192",
+                      "on-background": "#e4e2e1",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-tertiary-container": "#7c7d7e",
+                      "error-container": "#93000a",
+                      "surface-container-high": "#2a2a2a",
+                      "on-secondary-fixed": "#002022",
+                      "primary-fixed": "#e5e2e1",
+                      "outline-variant": "#444748",
+                      "error": "#ffb4ab",
+                      "inverse-primary": "#5f5e5e",
+                      "tertiary": "#c6c6c7",
+                      "secondary-fixed-dim": "#3edae3",
+                      "secondary": "#43dde6",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary": "#003739",
+                      "on-primary-fixed-variant": "#474646",
+                      "surface-bright": "#393939",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "surface-tint": "#c8c6c5",
+                      "surface": "#131313",
+                      "tertiary-fixed": "#e2e2e2",
+                      "primary": "#c8c6c5",
+                      "on-surface": "#e4e2e1",
+                      "secondary-container": "#00c1ca",
+                      "on-secondary-container": "#00494d",
+                      "surface-variant": "#353535",
+                      "on-secondary-fixed-variant": "#004f53",
+                      "on-surface-variant": "#c4c7c7",
+                      "tertiary-container": "#101213",
+                      "secondary-fixed": "#6bf6ff",
+                      "inverse-surface": "#e4e2e1",
+                      "surface-container-low": "#1b1c1c",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "on-error": "#690005",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "on-tertiary": "#2f3131",
+                      "background": "#131313",
+                      "on-primary-container": "#7e7d7d",
+                      "surface-dim": "#131313"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "card-gap": "48px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "metadata-label": ["Inter"],
+                      "frame-title": ["EB Garamond"],
+                      "annotation-sm": ["Inter"],
+                      "timing-code": ["Inter"],
+                      "display-title": ["EB Garamond"],
+                      "annotation-lg": ["Inter"],
+                      "frame-title-mobile": ["EB Garamond"]
+              },
+              "fontSize": {
+                      "metadata-label": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "frame-title": ["24px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                      "annotation-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "timing-code": ["13px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "display-title": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                      "annotation-lg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "frame-title-mobile": ["20px", {"lineHeight": "1.2", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #131313;
+            color: #e4e2e1;
+            scroll-behavior: smooth;
+        }
+        .storyboard-card {
+            transition: border-color 0.3s ease;
+        }
+        .storyboard-card:hover {
+            border-color: #43dde6;
+        }
+        .timeline-indicator {
+            height: 2px;
+            background: linear-gradient(to right, #43dde6, #00c1ca);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-annotation-sm antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 w-full">
+<div class="flex items-center gap-4 cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">movie_edit</span>
+<h1 class="font-display-title text-frame-title-mobile uppercase tracking-widest text-secondary">SURPRISE_STORYBOARD</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-secondary font-bold font-metadata-label tracking-widest hover:text-secondary transition-colors" href="#">FRAMES</a>
+<a class="text-on-surface-variant font-metadata-label tracking-widest hover:text-secondary transition-colors" href="#">TIMELINE</a>
+<a class="text-on-surface-variant font-metadata-label tracking-widest hover:text-secondary transition-colors" href="#">NOTES</a>
+<a class="text-on-surface-variant font-metadata-label tracking-widest hover:text-secondary transition-colors" href="#">EXPORT</a>
+</nav>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:opacity-70">more_vert</span>
+</div>
+<!-- Progress Bar -->
+<div class="absolute bottom-0 left-0 w-full h-[2px] bg-surface-container-highest">
+<div class="timeline-indicator h-full" id="scrollProgress"></div>
+</div>
+</header>
+<main class="pt-24 pb-32 max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop">
+<!-- Document Header -->
+<section class="mb-16 border-l-2 border-secondary pl-6 py-2">
+<span class="font-metadata-label text-secondary uppercase tracking-[0.2em] mb-2 block">PROJECT PRODUCTION TOOL</span>
+<h2 class="font-display-title text-display-title text-on-background">SURPRISE &amp; REUSE STORYBOARD</h2>
+<div class="flex flex-wrap gap-6 mt-4">
+<div class="flex flex-col">
+<span class="font-metadata-label text-on-surface-variant uppercase">Director</span>
+<span class="font-annotation-lg text-on-surface">Lifestyle Creative</span>
+</div>
+<div class="flex flex-col">
+<span class="font-metadata-label text-on-surface-variant uppercase">Draft</span>
+<span class="font-annotation-lg text-on-surface">v3.0 - Social Campaign</span>
+</div>
+<div class="flex flex-col">
+<span class="font-metadata-label text-on-surface-variant uppercase">Duration</span>
+<span class="font-annotation-lg text-on-surface">0:15 Total</span>
+</div>
+</div>
+</section>
+<!-- Storyboard Cards Loop -->
+<div class="flex flex-col gap-card-gap">
+<!-- Frame 01 -->
+<article class="storyboard-card bg-surface-container-low border border-outline-variant overflow-hidden">
+<div class="relative aspect-video bg-black">
+<img alt="Frame 01" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsOYviaxc9h8GScjqkro5tDda3OQsr43QHUEyJ_SqTvxt3UgpndCzTKlO_m4zEIyHsaKwr-lmtqG4e4u4YKKbUdd0iEKnIS3Un2RtpmUSY_2ZjObQcUeLRcT6tyT1BEZi29u27t6M6HuiY1u5RVfbvHVgHTwXWBInOdevaW76ou8rOg_ENri3wjX5zZyxM5MSoZtm9jQhx6fV_rEaY0CBn4D_70Ypd9y8MPN2skhbyHbsjm0lC9FTsOxBYlXhK9KI6SLQSxwsf-mI"/>
+<div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 border border-secondary/30">
+<span class="font-timing-code text-secondary">0:00 - 0:03</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-frame-title text-frame-title text-on-surface uppercase tracking-tight">FRAME 01</h3>
+<div class="flex items-center gap-2 px-3 py-1 border border-secondary text-secondary font-metadata-label rounded-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            APPROVED
+                        </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1">
+<span class="font-metadata-label text-on-surface-variant uppercase">Action</span>
+<p class="font-annotation-lg text-on-surface">Close-up on a matte red can.</p>
+</div>
+<div class="space-y-1">
+<span class="font-metadata-label text-on-surface-variant uppercase">Dialogue / Notes</span>
+<p class="font-annotation-sm text-on-primary-container italic">Appears to be a standard soda can sitting on a sun-drenched patio table.</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Frame 02 -->
+<article class="storyboard-card bg-surface-container-low border border-outline-variant overflow-hidden">
+<div class="relative aspect-video bg-black">
+<img alt="Frame 02" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4VTL_MlSLJG7UuO5LQpYZMUtGmGdcw-DzoVLbTaN9hHzS0BVZOEscIlzVwDK_6UGbqZ8au-yH_Uezv1le4Vxna_xVz1hkwXzsGd9lSbL_DRWqQavHWMO16dghaafdK4yKnKNHYYaMZJ4PfV6WBxx41bjWs4rbevca85PRS-3ZlMdGU7ycQiHDnqgATC_DN5qBjE2NoZel8AFJeF-3RD9Ode6ORUX0Lq_FfhsOMyZHA6Hjgxr1dPlWJtVEzyXoKXtg8Itsya7T28U"/>
+<div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 border border-secondary/30">
+<span class="font-timing-code text-secondary">0:03 - 0:06</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-frame-title text-frame-title text-on-surface uppercase tracking-tight">FRAME 02</h3>
+<div class="flex items-center gap-2 px-3 py-1 border border-white/20 text-on-surface-variant font-metadata-label rounded-sm">
+<span class="material-symbols-outlined text-[14px]">pending</span>
+                            REVIEW
+                        </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1">
+<span class="font-metadata-label text-on-surface-variant uppercase">Action</span>
+<p class="font-annotation-lg text-on-surface">Friends social gathering at the beach.</p>
+</div>
+<div class="space-y-1">
+<span class="font-metadata-label text-on-surface-variant uppercase">Dialogue / Notes</span>
+<p class="font-annotation-sm text-on-primary-container italic">"Everyone assumes it's just a soda..." Social atmosphere, bright and natural.</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Frame 03 -->
+<article class="storyboard-card bg-surface-container-low border border-outline-variant overflow-hidden">
+<div class="relative aspect-video bg-black">
+<img alt="Frame 03" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZVrga_IC3Iq5Nwhk14Q7dZM8E6Q1KSCAm1V89RtEzSVCQQc2O4S754GJJ6WrBR8sGckCIR_D91l41ypzHbNpJfV6A2vhRNqbtN6HxYmx8fpNIJU41JLa6jUxC6UYiM7499NCpCZUIarTDdzBi6HCQfaAUvECaAWt2h25QfUpn5SGDjghZrVR7dpOk4OsT6cTDR8frKj7jS4TnYd3_eIHhYWDPnGm7PecHc9CGYZlPFz-jzXVym0MoE-R0R4ZZfa0GR_kSVz6Muhg"/>
+<div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 border border-secondary/30">
+<span class="font-timing-code text-secondary">0:06 - 0:09</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-frame-title text-frame-title text-on-surface uppercase tracking-tight">FRAME 03</h3>
+<div class="flex items-center gap-2 px-3 py-1 border border-secondary text-secondary font-metadata-label rounded-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            APPROVED
+                        </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1">
+<span class="font-metadata-label text-on-surface-variant uppercase">Action</span>
+<p class="font-annotation-lg text-on-surface">Hand slides the sleeve up.</p>
+</div>
+<div class="space-y-1">
+<span class="font-metadata-label text-on-surface-variant uppercase">Dialogue / Notes</span>
+<p class="font-annotation-sm text-on-primary-container italic">The "Reveal" moment. A cold beer can with condensation is exposed underneath the red sleeve. Surprise!</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Frame 04 -->
+<article class="storyboard-card bg-surface-container-low border border-outline-variant overflow-hidden">
+<div class="relative aspect-video bg-black">
+<img alt="Frame 04" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNSQ3muMGC0pXLpleLCuJQG-tpW-gom29onw0NkFfzLG3KvnMftq7VnU7rl75NiQXEy6tzr4frndyRhlXRbbw7bBt3ZDdg4vQHDjdVDNmpNTd21E30Kiiojmr1OLPa2dofyHV-nYK7BK2pD6mBVZU1YMWYtxfqaScXVAJDHsZejy-_eEBGjcB153bYOAIBzubZSFnUOs5DyeiXK5KWHSJTLxIxlWgPGc5uaLM5ElrsdMxa-rZSKqWpbemFCe3gXO1j4rT-MaZTYfM"/>
+<div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 border border-secondary/30">
+<span class="font-timing-code text-secondary">0:09 - 0:12</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-frame-title text-frame-title text-on-surface uppercase tracking-tight">FRAME 04</h3>
+<div class="flex items-center gap-2 px-3 py-1 border border-secondary text-secondary font-metadata-label rounded-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            APPROVED
+                        </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1">
+<span class="font-metadata-label text-on-surface-variant uppercase">Action</span>
+<p class="font-annotation-lg text-on-surface">Finished can, cold sleeve remains.</p>
+</div>
+<div class="space-y-1">
+<span class="font-metadata-label text-on-surface-variant uppercase">Dialogue / Notes</span>
+<p class="font-annotation-sm text-on-primary-container italic">The beverage is done, but the silicone sleeve stays frosty. Emphasize cold retention and tactile quality.</p>
+</div>
+</div>
+</div>
+</article>
+<!-- Frame 05 -->
+<article class="storyboard-card bg-surface-container-low border border-outline-variant overflow-hidden">
+<div class="relative aspect-video bg-black">
+<img alt="Frame 05" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAABhBPbQH7Qa62hj4lQIfXmiBa0VVzhFxsgDuXq_VHrhoL4dTQzS7P8vMz-zi6RcqFacRemHKo3MKPYYAumhSLlMcfvvBCqcgByFczKhPdeRiQ6ZjtuJE3OnKBzDIdYJ_M2iCwxLb2qkhDgY1wD44EgnUf_wC-09YRYBhZb7dkwCnvz7HwoXY0_ux70uSRdnLYzbNCORcuTZc0k6Pfgrwl6ij0bcOYW0OX9Pqpp2Txp-IgOob8clA3jzBFXnu5NUshelB5NIHLzyQ"/>
+<div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 border border-secondary/30">
+<span class="font-timing-code text-secondary">0:12 - 0:15</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-frame-title text-frame-title text-on-surface uppercase tracking-tight">FRAME 05</h3>
+<div class="flex items-center gap-2 px-3 py-1 border border-secondary text-secondary font-metadata-label rounded-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            LOCKED
+                        </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1">
+<span class="font-metadata-label text-on-surface-variant uppercase">Action</span>
+<p class="font-annotation-lg text-on-surface">New can inserted immediately.</p>
+</div>
+<div class="space-y-1">
+<span class="font-metadata-label text-on-surface-variant uppercase">Dialogue / Notes</span>
+<p class="font-annotation-sm text-on-primary-container italic">"Ready for the next one." Immediate reuse. Fresh can dropped into the same cold sleeve from an ice cooler.</p>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Call to Action Section -->
+<section class="mt-24 text-center">
+<h2 class="font-display-title text-frame-title text-on-surface mb-8">Ready to move into production?</h2>
+<div class="flex flex-col md:flex-row items-center justify-center gap-4">
+<button class="w-full md:w-auto px-8 py-4 bg-secondary text-on-secondary font-metadata-label uppercase tracking-widest font-bold hover:bg-secondary-container transition-all active:scale-95">
+                    Approve Full Sequence
+                </button>
+<button class="w-full md:w-auto px-8 py-4 border border-on-surface text-on-surface font-metadata-label uppercase tracking-widest hover:bg-surface-container-high transition-all active:scale-95">
+                    Download PDF Deck
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-surface-container border-t border-outline-variant px-margin-mobile pb-safe">
+<div class="flex flex-col items-center justify-center text-secondary font-bold active:scale-95 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-annotation-sm">Frames</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 duration-200">
+<span class="material-symbols-outlined">timer</span>
+<span class="font-annotation-sm">Timeline</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 duration-200">
+<span class="material-symbols-outlined">description</span>
+<span class="font-annotation-sm">Notes</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 duration-200">
+<span class="material-symbols-outlined">ios_share</span>
+<span class="font-annotation-sm">Export</span>
+</div>
+</nav>
+<script>
+        // Micro-interaction for scroll progress
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("scrollProgress").style.width = scrolled + "%";
+        };
+
+        // Subtle hover effects for cards
+        const cards = document.querySelectorAll('.storyboard-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+                card.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>
