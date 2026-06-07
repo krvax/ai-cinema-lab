@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Cinema Lab / Pitch Deck</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-on-surface": "#313030",
+                      "on-secondary": "#003919",
+                      "surface-container-low": "#1c1b1b",
+                      "on-tertiary": "#002b75",
+                      "outline": "#83958d",
+                      "on-secondary-container": "#007239",
+                      "error": "#ffb4ab",
+                      "on-primary-container": "#00725a",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-surface-variant": "#b9cbc2",
+                      "outline-variant": "#3a4a44",
+                      "error-container": "#93000a",
+                      "on-tertiary-container": "#005ae2",
+                      "secondary-fixed-dim": "#00e479",
+                      "tertiary-fixed-dim": "#b3c5ff",
+                      "surface-container": "#201f1f",
+                      "on-surface": "#e5e2e1",
+                      "tertiary-container": "#dae1ff",
+                      "surface-variant": "#353534",
+                      "inverse-primary": "#006b54",
+                      "secondary-fixed": "#60ff99",
+                      "primary-fixed": "#24ffcd",
+                      "on-error": "#690005",
+                      "on-tertiary-fixed": "#001849",
+                      "primary-fixed-dim": "#00e0b3",
+                      "primary-container": "#00ffcc",
+                      "surface-tint": "#00e0b3",
+                      "on-error-container": "#ffdad6",
+                      "on-background": "#e5e2e1",
+                      "tertiary-fixed": "#dae1ff",
+                      "secondary": "#f5fff3",
+                      "background": "#131313",
+                      "secondary-container": "#34ff8d",
+                      "on-primary": "#00382b",
+                      "on-tertiary-fixed-variant": "#003fa4",
+                      "inverse-surface": "#e5e2e1",
+                      "tertiary": "#fffeff",
+                      "on-primary-fixed": "#002118",
+                      "primary": "#fdfffc",
+                      "surface-container-high": "#2a2a2a",
+                      "surface-dim": "#131313",
+                      "surface-container-highest": "#353534",
+                      "surface-bright": "#3a3939",
+                      "on-primary-fixed-variant": "#00513f",
+                      "on-secondary-fixed": "#00210c",
+                      "surface": "#131313",
+                      "on-secondary-fixed-variant": "#005228"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-lg": "64px",
+                      "unit": "8px",
+                      "gutter": "16px",
+                      "margin-sm": "16px",
+                      "container-padding": "24px",
+                      "margin-md": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                               "Space Grotesk"
+                       ],
+                       "headline-lg": [
+                               "Space Grotesk"
+                       ],
+                       "headline-xl": [
+                               "Space Grotesk"
+                       ],
+                       "body-sm": [
+                               "Inter"
+                       ],
+                       "label-mono": [
+                               "JetBrains Mono"
+                       ],
+                       "body-md": [
+                               "Inter"
+                       ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                               "24px",
+                               {
+                                       "lineHeight": "1.2",
+                                       "fontWeight": "600"
+                               }
+                       ],
+                       "headline-lg": [
+                               "32px",
+                               {
+                                       "lineHeight": "1.2",
+                                       "letterSpacing": "-0.01em",
+                                       "fontWeight": "600"
+                               }
+                       ],
+                       "headline-xl": [
+                               "48px",
+                               {
+                                       "lineHeight": "1.1",
+                                       "letterSpacing": "-0.02em",
+                                       "fontWeight": "700"
+                               }
+                       ],
+                       "body-sm": [
+                               "14px",
+                               {
+                                       "lineHeight": "1.5",
+                                       "fontWeight": "400"
+                               }
+                       ],
+                       "label-mono": [
+                               "12px",
+                               {
+                                       "lineHeight": "1.0",
+                                       "letterSpacing": "0.05em",
+                                       "fontWeight": "500"
+                               }
+                       ],
+                       "body-md": [
+                               "16px",
+                               {
+                                       "lineHeight": "1.6",
+                                       "fontWeight": "400"
+                               }
+                       ]
+              }
+            }
+          }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .glass-panel {
+                @apply bg-surface/70 backdrop-blur-[40px] border border-outline-variant/20 shadow-[0_8px_32px_rgba(0,255,204,0.15)] relative overflow-hidden;
+            }
+            .glass-panel::before {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0,255,204,0.1), transparent 40%);
+                z-index: 0;
+                pointer-events: none;
+                transition: opacity 0.3s;
+                opacity: 0;
+            }
+            .glass-panel:hover::before {
+                opacity: 1;
+            }
+            .glass-panel > * {
+                position: relative;
+                z-index: 1;
+            }
+            .text-glow {
+                text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            }
+            .bg-ambient {
+                background: linear-gradient(to bottom right, #050505, #001f18, #050505);
+                background-size: 200% 200%;
+                animation: ambientMove 15s ease infinite;
+            }
+            .animate-neon-flicker {
+                animation: neonFlicker 3s infinite;
+            }
+            .animate-breathing {
+                animation: breathingPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+            .btn-deploy {
+                box-shadow: 0 0 20px rgba(0,255,204,0.4);
+                transition: all 0.3s ease;
+            }
+            .btn-deploy:hover {
+                box-shadow: 0 0 40px rgba(0,255,204,0.8);
+                transform: scale(1.05);
+                filter: brightness(1.2);
+            }
+        }
+        
+        @keyframes ambientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes neonFlicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+                opacity: 1;
+                text-shadow: 0 0 10px rgba(0, 255, 204, 0.5), 0 0 20px rgba(0, 255, 204, 0.3);
+            }
+            20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+                opacity: 0.8;
+                text-shadow: none;
+            }
+        }
+        
+        @keyframes breathingPulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 10px rgba(0,255,204,0.5); }
+            50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 20px rgba(0,255,204,0.9); }
+        }
+
+        .pipeline-step {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease-out;
+        }
+        .pipeline-step.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-ambient text-on-surface font-body-md min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container relative">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-[40px] border-b border-outline-variant/20 shadow-[0_8px_32px_rgba(0,255,204,0.15)] flex justify-between items-center px-margin-lg py-unit w-full transition-all duration-300" id="main-nav">
+<div class="font-headline-lg text-headline-lg font-bold tracking-tighter text-primary-fixed">AI Cinema Lab</div>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Governance</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Pipeline</a>
+<a class="text-primary-fixed font-bold border-b-2 border-primary-fixed pb-1 active:scale-95 transition-transform" href="#">Investor Relations</a>
+</div>
+<div class="flex items-center gap-unit">
+<button class="hidden md:flex items-center gap-2 bg-primary-container text-on-primary-container px-4 py-2 rounded font-medium hover:bg-primary-fixed transition-colors">
+<span>Access Terminal</span>
+</button>
+<button aria-label="account_tree" class="p-2 text-on-surface hover:text-primary-fixed transition-colors active:scale-95 transition-transform">
+<span class="material-symbols-outlined">account_tree</span>
+</button>
+<button aria-label="monitoring" class="p-2 text-on-surface hover:text-primary-fixed transition-colors active:scale-95 transition-transform">
+<span class="material-symbols-outlined">monitoring</span>
+</button>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="flex-grow pt-[100px] px-margin-sm md:px-margin-lg pb-margin-lg flex flex-col gap-margin-md max-w-[1440px] mx-auto w-full relative z-10">
+<!-- Hero Section -->
+<section class="flex flex-col items-center justify-center min-h-[60vh] text-center gap-gutter relative mt-margin-md">
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary-container/10 via-background/0 to-background/0 pointer-events-none -z-10"></div>
+<h1 class="font-headline-xl text-headline-xl font-bold tracking-tighter text-primary-fixed text-glow mb-4 animate-neon-flicker">AI Cinema Lab / Automated AI Commercial Production with Built-In Cost Governance</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mb-8">Generate, track and govern AI-powered commercial campaigns from prompt to final render.</p>
+<div class="relative w-full max-w-5xl aspect-video rounded-xl overflow-hidden glass-panel group cursor-pointer">
+<img alt="Placeholder for main cinematic video" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/AP1WRLsxQboP8Wch1eH2SEC7z8BE13ylGF59TB2JzTxFGGXlxTdNqqz0-zJ-R68hXB1cRmbJjJxMoyrw3oT43vqPesTdtMBDWKFokT6XPBW4rMV1tYBP910T3qIAn58j-X11Tf4irHDFDjAmynLmo-Q8lDSSN8M-RdV8niigKt-07EF1_0zfug0JmrHuDcHfQTB5MpN6XZI9PQI8CXhvShRpNMmD-srYuS0H7bTdI1U9bF4Hb_FwUOdnJTswPg"/>
+<div class="absolute inset-0 flex items-center justify-center bg-background/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<button class="w-20 h-20 rounded-full bg-primary-container/20 backdrop-blur border border-primary-container flex items-center justify-center text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all hover:scale-110 shadow-[0_0_30px_rgba(0,255,204,0.4)]">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Mini telemetry overlay -->
+<div class="absolute top-4 left-4 flex gap-2">
+<span class="font-label-mono text-label-mono bg-surface-container-highest/80 px-2 py-1 rounded text-primary-fixed border border-primary-fixed/30 backdrop-blur">FPS: 60.0</span>
+<span class="font-label-mono text-label-mono bg-surface-container-highest/80 px-2 py-1 rounded text-primary-fixed border border-primary-fixed/30 backdrop-blur">RES: 8K RAW</span>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-surface-variant">
+<div class="h-full bg-gradient-to-r from-primary-container to-secondary-container w-1/3"></div>
+</div>
+</div>
+</section>
+<!-- Problem / Solution Section -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-margin-md my-margin-lg">
+<div class="glass-panel p-container-padding rounded-xl flex flex-col gap-4">
+<div class="flex items-center gap-2 text-error">
+<span class="material-symbols-outlined">warning</span>
+<h3 class="font-headline-lg-mobile font-bold">The Problem</h3>
+</div>
+<p class="font-body-md text-on-surface-variant">Traditional commercial production is slow, expensive, and hard to iterate. Fixed budgets limit creative exploration, and changes require costly reshoots.</p>
+</div>
+<div class="glass-panel p-container-padding rounded-xl border-primary-fixed/30 flex flex-col gap-4">
+<div class="flex items-center gap-2 text-primary-fixed">
+<span class="material-symbols-outlined">check_circle</span>
+<h3 class="font-headline-lg-mobile font-bold">The Solution</h3>
+</div>
+<p class="font-body-md text-on-surface-variant">AI Cinema Lab provides a governed, automated pipeline. Iterate endlessly with AI generation, while maintaining strict financial control over rendering costs.</p>
+</div>
+</section>
+<!-- Grid Layout for Dashboard & Pipeline -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-margin-md">
+<!-- FinOps & Cost Governance -->
+<section class="lg:col-span-5 glass-panel rounded-xl p-container-padding flex flex-col gap-gutter">
+<div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed">account_balance</span>
+                        Live FinOps Dashboard
+                    </h2>
+<span class="font-label-mono text-label-mono text-on-surface-variant">[SYS_V.04]</span>
+</div>
+<div class="relative w-full aspect-square max-w-[300px] mx-auto overflow-hidden">
+<img alt="Stability Gauge showing system performance metrics in glowing neon green" class="w-full h-full object-contain mix-blend-screen" src="https://lh3.googleusercontent.com/aida/AP1WRLu8E98MM_nix2w5CwKIbl3pU1TN191bApB6hH6J64_S3y_Y6behctr7Rk5nkScT5w1AGyAjTLgPIhEUh3uSaYlvgA9W4ncmgcIIEUikFxPtiLQaTsobRXqAN4nHpVxAvfXQSlCIb8jGpcUiDDZEs3LsMnYFbjX7Imnl7I0BUZuUjd2FtjahbKHlrhrJQtEJYCwlvSa-GRw4J57GjhK--Vr1VCMfCecQpddg9TQb-bw0zz9EJErlPOIagg"/>
+</div>
+<div class="grid grid-cols-2 gap-unit mt-4">
+<div class="bg-surface-container/50 rounded-lg p-3 border border-outline-variant/20">
+<div class="font-label-mono text-label-mono text-on-surface-variant mb-1">Authorized</div>
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">$15.00 <span class="text-sm text-on-surface-variant">USD</span></div>
+</div>
+<div class="bg-surface-container/50 rounded-lg p-3 border border-outline-variant/20">
+<div class="font-label-mono text-label-mono text-on-surface-variant mb-1">Consumed</div>
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary-fixed">$12.72 <span class="text-sm text-on-surface-variant">USD</span></div>
+</div>
+</div>
+<div class="flex items-center justify-between bg-primary-fixed/10 border border-primary-fixed/30 rounded-lg p-3 mt-2">
+<span class="font-label-mono text-label-mono text-on-surface">System Status</span>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_10px_rgba(0,255,204,0.8)] animate-breathing"></div>
+<span class="font-label-mono text-label-mono text-primary-container font-bold tracking-widest text-glow">STABLE</span>
+</div>
+</div>
+<div class="mt-4 overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/30">
+<th class="py-2 font-label-mono text-label-mono text-on-surface-variant font-normal">Model Route</th>
+<th class="py-2 font-label-mono text-label-mono text-on-surface-variant font-normal text-right">Cost Rate</th>
+</tr>
+</thead>
+<tbody class="font-label-mono text-label-mono">
+<tr class="border-b border-outline-variant/10 hover:bg-surface-variant/30 transition-colors">
+<td class="py-3 text-on-surface">Veo Text-to-Video</td>
+<td class="py-3 text-primary-fixed text-right">$0.15/s</td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-3 text-on-surface">Image-to-Video</td>
+<td class="py-3 text-primary-fixed text-right">$0.18/s</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Automated Pipeline Flow -->
+<section class="lg:col-span-7 glass-panel rounded-xl p-container-padding flex flex-col gap-gutter" id="pipeline-container">
+<div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed">schema</span>
+                        Creative Pipeline
+                    </h2>
+<span class="font-label-mono text-label-mono text-on-surface-variant">[PL_EXEC_01]</span>
+</div>
+<div class="flex-grow flex flex-col justify-center gap-margin-sm relative mt-4">
+<!-- Connecting line -->
+<div class="absolute left-[23px] top-4 bottom-4 w-px bg-outline-variant/50 z-0 hidden sm:block">
+<div class="h-1/2 w-full bg-gradient-to-b from-primary-fixed to-transparent"></div>
+</div>
+<!-- Step 1 -->
+<div class="flex items-start gap-4 relative z-10 group pipeline-step" style="transition-delay: 100ms;">
+<div class="w-12 h-12 rounded-full bg-surface border border-outline-variant group-hover:border-primary-fixed flex items-center justify-center shrink-0 transition-colors">
+<span class="font-label-mono text-label-mono text-on-surface-variant group-hover:text-primary-fixed">1</span>
+</div>
+<div class="bg-surface-container/40 p-4 rounded-lg border border-outline-variant/20 flex-grow hover:bg-surface-container/60 transition-colors">
+<h3 class="font-body-sm font-semibold text-on-surface mb-1">Brief</h3>
+<p class="font-body-sm text-on-surface-variant text-sm">Raw thematic concepts and narrative arcs ingested via secure terminal.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-4 relative z-10 group pipeline-step" style="transition-delay: 200ms;">
+<div class="w-12 h-12 rounded-full bg-surface border border-primary-fixed shadow-[0_0_15px_rgba(0,255,204,0.2)] flex items-center justify-center shrink-0">
+<span class="font-label-mono text-label-mono text-primary-fixed">2</span>
+</div>
+<div class="bg-primary-fixed/5 p-4 rounded-lg border border-primary-fixed/30 flex-grow relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2">
+<div class="w-1.5 h-1.5 rounded-full bg-primary-container animate-ping"></div>
+</div>
+<h3 class="font-body-sm font-semibold text-primary-fixed mb-1">Storyboard</h3>
+<p class="font-body-sm text-on-surface-variant text-sm">Gemini API active processing. Synthesizing structural prompts.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start gap-4 relative z-10 group pipeline-step" style="transition-delay: 300ms;">
+<div class="w-12 h-12 rounded-full bg-surface border border-outline-variant group-hover:border-primary-fixed flex items-center justify-center shrink-0 transition-colors">
+<span class="font-label-mono text-label-mono text-on-surface-variant group-hover:text-primary-fixed">3</span>
+</div>
+<div class="bg-surface-container/40 p-4 rounded-lg border border-outline-variant/20 flex-grow hover:bg-surface-container/60 transition-colors">
+<h3 class="font-body-sm font-semibold text-on-surface mb-1">Production</h3>
+<p class="font-body-sm text-on-surface-variant text-sm">Google Veo deployment. Distributed cluster rendering initiated.</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex items-start gap-4 relative z-10 group pipeline-step" style="transition-delay: 400ms;">
+<div class="w-12 h-12 rounded-full bg-surface border border-outline-variant group-hover:border-primary-fixed flex items-center justify-center shrink-0 transition-colors">
+<span class="font-label-mono text-label-mono text-on-surface-variant group-hover:text-primary-fixed">4</span>
+</div>
+<div class="bg-surface-container/40 p-4 rounded-lg border border-outline-variant/20 flex-grow hover:bg-surface-container/60 transition-colors">
+<h3 class="font-body-sm font-semibold text-on-surface mb-1">Delivery</h3>
+<p class="font-body-sm text-on-surface-variant text-sm">MoviePy automated assembly. Final color grading and export.</p>
+</div>
+</div>
+<div class="mt-2 text-center">
+<p class="font-label-mono text-label-mono text-on-surface-variant opacity-70">Powered by Gemini, Veo and MoviePy</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Storyboard Carousel -->
+<section class="flex flex-col gap-gutter mt-margin-md">
+<div class="flex justify-between items-end mb-4">
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-1">Output Gallery (Storyboard)</h2>
+<p class="font-body-sm text-on-surface-variant">Visual keyframes for active deployment.</p>
+</div>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-primary-fixed hover:border-primary-fixed transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:text-primary-fixed hover:border-primary-fixed transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-margin-sm overflow-x-auto pb-4 hide-scrollbar">
+<!-- Card 1 -->
+<div class="glass-panel rounded-xl overflow-hidden group flex flex-col min-w-[300px]">
+<div class="relative aspect-[3/2] overflow-hidden">
+<img alt="Cyberpunk transformation scene showing a humanoid figure transitioning into a digital ethereal form" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLsNTqx0S7s9vnuziE58mAOareO2nFBN__-AKTRSnbrVBg-0dQgskQxFSkrQ39KhanQbC4QRgDVyoTWkJSOIdFNp0hAoptxIYjN6USpYbEFRxuaHA6b9AllyiwWOMCKN3M32vmwyWdjtLmx67ObPbPOvPlHLXU9njqZZiqoRzm1i0S3m6mQQSNPmYcV7sHEhejJSOwn0AOc3W4e8wJYEwrg8FZ07Bf_ageABCxfBV62kDnRu2V_12-6z7w"/>
+<div class="absolute top-3 left-3 bg-background/80 backdrop-blur px-2 py-1 rounded border border-outline-variant/50">
+<span class="font-label-mono text-label-mono text-primary-fixed">SCN_01</span>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20 bg-surface-container-low/50">
+<h3 class="font-body-md font-semibold text-on-surface mb-2">Scene 1: The Transformation</h3>
+<div class="flex justify-between items-center text-sm font-label-mono text-on-surface-variant">
+<span>Goal: <span class="text-primary-fixed">Hook</span></span>
+<span>Duration: <span class="text-primary-fixed">3s</span></span>
+<span>Cost: <span class="text-primary-fixed">$0.45</span></span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-panel rounded-xl overflow-hidden group flex flex-col min-w-[300px]">
+<div class="relative aspect-[3/2] overflow-hidden bg-surface-container flex items-center justify-center">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-surface-container-high via-background to-background"></div>
+<span class="material-symbols-outlined text-6xl text-outline-variant/30 group-hover:text-primary-fixed/50 transition-colors duration-500">movie</span>
+<div class="absolute top-3 left-3 bg-background/80 backdrop-blur px-2 py-1 rounded border border-outline-variant/50">
+<span class="font-label-mono text-label-mono text-primary-fixed">SCN_02</span>
+</div>
+<div class="absolute inset-0 flex items-center justify-center backdrop-blur-sm bg-background/20 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="font-label-mono text-label-mono text-primary-fixed border border-primary-fixed px-3 py-1 rounded bg-background/80">RENDER_PENDING</span>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20 bg-surface-container-low/50">
+<h3 class="font-body-md font-semibold text-on-surface mb-2">Scene 2: Product Showcase</h3>
+<div class="flex justify-between items-center text-sm font-label-mono text-on-surface-variant">
+<span>Goal: <span class="text-primary-fixed">Curiosidad</span></span>
+<span>Duration: <span class="text-primary-fixed">3s</span></span>
+<span>Cost: <span class="text-primary-fixed">$0.45</span></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Production Metrics Section -->
+<section class="mt-margin-lg mb-margin-md">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-4">Production Metrics</h2>
+<div class="glass-panel rounded-xl p-container-padding grid grid-cols-2 md:grid-cols-5 gap-4 border border-primary-fixed/30 shadow-[0_0_20px_rgba(0,255,204,0.15)]">
+<div class="flex flex-col gap-1">
+<span class="font-label-mono text-label-mono text-on-surface-variant">Commercial Length</span>
+<span class="font-headline-lg-mobile text-primary-fixed font-bold">15 sec</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-mono text-label-mono text-on-surface-variant">Render Cost</span>
+<span class="font-headline-lg-mobile text-primary-fixed font-bold">$12.72</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-mono text-label-mono text-on-surface-variant">Render Time</span>
+<span class="font-headline-lg-mobile text-primary-fixed font-bold">6 min</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-mono text-label-mono text-on-surface-variant">Variants Generated</span>
+<span class="font-headline-lg-mobile text-primary-fixed font-bold">8</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-mono text-label-mono text-on-surface-variant">Cost Reduction</span>
+<span class="font-headline-lg-mobile text-primary-container font-bold text-glow">92%</span>
+</div>
+</div>
+</section>
+<!-- Call to Action -->
+<section class="flex flex-col sm:flex-row items-center justify-center gap-margin-sm my-margin-lg">
+<button class="bg-primary-container text-on-primary-container font-headline-lg-mobile font-bold px-8 py-4 rounded-lg flex items-center gap-2 w-full sm:w-auto justify-center group btn-deploy">
+                Deploy Pipeline
+                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">rocket_launch</span>
+</button>
+<button class="glass-panel text-primary-fixed font-body-md px-6 py-4 rounded-lg hover:bg-primary-fixed/10 transition-colors flex items-center gap-2 w-full sm:w-auto justify-center">
+<span class="material-symbols-outlined">download</span>
+                Export Executive Summary PDF
+            </button>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant/30 w-full py-margin-md mt-auto relative z-10">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-lg gap-gutter w-full max-w-[1440px] mx-auto">
+<div class="font-headline-lg text-headline-lg font-bold text-primary-fixed tracking-tighter">AI Cinema Lab</div>
+<div class="flex flex-wrap justify-center gap-gutter">
+<a class="text-on-surface-variant font-body-sm text-body-sm hover:text-secondary-fixed-dim transition-colors active:opacity-80" href="#">System Status</a>
+<a class="text-on-surface-variant font-body-sm text-body-sm hover:text-secondary-fixed-dim transition-colors active:opacity-80" href="#">API Documentation</a>
+<a class="text-on-surface-variant font-body-sm text-body-sm hover:text-secondary-fixed-dim transition-colors active:opacity-80" href="#">Governance Framework</a>
+<a class="text-on-surface-variant font-body-sm text-body-sm hover:text-secondary-fixed-dim transition-colors active:opacity-80" href="#">Privacy Protocol</a>
+</div>
+<div class="text-on-surface-variant font-body-sm text-body-sm text-center md:text-right mt-4 md:mt-0">
+                © 2024 AI Cinema Lab. SRE-Optimized Cinematic Production.
+            </div>
+</div>
+</footer>
+<style>
+        /* Hide scrollbar for clean horizontal scrolling */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script>
+    document.addEventListener('mousemove', e => {
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            const rect = panel.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            panel.style.setProperty('--mouse-x', `${x}px`);
+            panel.style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.pipeline-step').forEach(step => {
+        observer.observe(step);
+    });
+</script>
+</body></html>
